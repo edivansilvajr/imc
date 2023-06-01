@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+
+        const altura = '';
+        let total = 0;
+
+        const classificacao = [
+            { id: 1, min: 0, max: 18.4, descr: 'Peso baixo' },
+            { id: 2, min: 18.5, max: 24.8, descr: 'Peso normal ou Adequado' },
+            { id: 3, min: 25.0, max: 29.9, descr: 'Sobrepeso' },
+            { id: 4, min: 30.0, max: 34.9, descr: 'Obesidade Grau I' },
+            { id: 5, min: 35, max: 39.9, descr: 'Obesidade Grau II' },
+            { id: 6, min: 40, max: 50, descr: 'Obesidade Grau III ou Mórbida' }
+        ];
+
+
+
+        const h4 = document.createElement('h4');
+        h4.textContent = 'Preencha os campos abaixo e descubra o seu IMC (índice de Massa Corporal)';
+        const form = document.createElement('form');
+
+        const div1 = document.createElement('div');
+        const label1 = document.createElement('label');
+        label1.textContent = 'Seu peso (Kg):';
+        const input1 = document.createElement('input');
+        input1.setAttribute('id', 'peso');
+
+
+        div1.append(label1, input1);
+        const div2 = document.createElement('div');
+        const label2 = document.createElement('label');
+        label2.textContent = 'Sua altura(M):';
+        const input2 = document.createElement('input');
+        input2.setAttribute('id', 'altura')
+
+        div2.append(label2, input2);
+        const div3 = document.createElement('div');
+        const button = document.createElement('button');
+        button.textContent = 'Calcular';
+
+
+        function calcularImc(peso, altura) {
+            const imc = peso / altura ** 2
+
+            exibirResultado(imc)
+        }
+
+        function exibirResultado(imc) {
+            const resultado = document.getElementById('resultado')
+            resultado.innerHTML = `Resultado: ${imc.toFixed(1)}`
+
+            if (imc < 18.4) {
+                resultado.innerHTML = `Resultado: ${imc.toFixed(1)} ${classificacao[0].descr}`
+            } else if (imc < 25) {
+                resultado.innerHTML = `Resultado: ${imc.toFixed(1)} ${classificacao[1].descr}`
+            } else if (imc < 30) {
+                resultado.innerHTML = `Resultado: ${imc.toFixed(1)} ${classificacao[2].descr}`
+            } else if (imc < 35) {
+                resultado.innerHTML = `Resultado: ${imc.toFixed(1)} ${classificacao[3].descr}`
+            } else if (imc < 40) {
+                resultado.innerHTML = `Resultado: ${imc.toFixed(1)} ${classificacao[4].descr}`
+            } else {
+                resultado.innerHTML = `Resultado: ${imc.toFixed(1)} ${classificacao[5].descr}`
+            }
+
+        }
+
+        const calcular = (e) => {
+            e.preventDefault()
+
+            const objpeso = document.getElementById('peso')
+            const peso = Number(objpeso.value)
+            const objAltura = document.getElementById('altura')
+            const altura = Number(objAltura.value)
+
+            calcularImc(peso, altura)
+
+        };
+
+        button.addEventListener('click', calcular);
+
+        div3.append(button);
+        const div4 = document.createElement('div');
+        div4.style = 'text-align:center';
+        div4.textContent = 'Resultado: ';
+        div4.setAttribute('id', 'resultado')
+        form.append(h4, div1, div2, div3, div4);
+        const divApp = document.getElementById('app');
+        divApp.style = 'text-align:center';
+        const table = document.createElement('table');
+
+        classificacao.forEach(item => {
+            const tr = document.createElement('tr');
+            const texto = (total == 0) ? 'Menos de ' + item.max : 'Entre ' + item.min + ' e ' + item.max;
+            const td1 = document.createElement('td');
+            td1.textContent = texto;
+            const td2 = document.createElement('td');
+            td2.textContent = item.descr;
+            tr.append(td1, td2);
+            table.appendChild(tr);
+            total++;
+        });
+
+        divApp.append(form, table);
+
+    </script>
+</body>
+
+</html>
